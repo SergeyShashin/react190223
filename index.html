@@ -20,18 +20,51 @@
 
     const root = ReactDOM.createRoot(container);
 
-
-    class Welcome extends React.Component {
-
-      render() {
-        return <h1>Привет, {this.props.name}!</h1>
-      }
-
+    const props = {
+      author: {
+        name: 'Человек',
+        avatarUrl: 'https://i.pinimg.com/originals/27/88/90/278890de0dcaf4f4ee2a0383a754f9ef.jpg',
+        date: '19.02.23'
+      },
+      text: 'Привет, Мир!'
     }
 
-    const element = <Welcome name='Человек' />;
+    function Comment(props) {
+      return (
+        <div className="Comment">
+          <UserInfo user={props.author}/>
+          <div className="Comment-text">
+            {props.text}
+          </div>
+          <div className="Comment-date">
+            {props.date}
+          </div>
+        </div>
+      );
+    }
 
-    root.render(element);
+    function Avatar(props) {
+      return (
+        <img width='300px' className="Avatar"
+          src={props.user.avatarUrl}
+          alt={props.user.name}
+        />
+      )
+    }
+
+    function UserInfo(props) {
+      return (
+        <div className="UserInfo">
+          <Avatar user={props.user} />
+          <div className="UserInfo-name">
+            {props.user.name}
+          </div>
+        </div>
+
+      )
+    }
+
+    root.render(Comment(props));
 
   </script>
   <!--
