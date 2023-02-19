@@ -20,19 +20,18 @@
 
     const root = ReactDOM.createRoot(container);
 
-    setInterval(() => tick(), 1000);
 
-    function tick() {
-      const element = (
-        <div>
-          <h1>Hello, world!</h1>
-          <h2>It is {new Date().toLocaleTimeString()}</h2>
-        </div>
+    class Welcome extends React.Component {
 
-      );
-      root.render(element);
+      render() {
+        return <h1>Привет, {this.props.name}!</h1>
+      }
+
     }
 
+    const element = <Welcome name='Человек' />;
+
+    root.render(element);
 
   </script>
   <!--
