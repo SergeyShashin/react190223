@@ -18,32 +18,25 @@
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
 
+    function Greeting(props) {
 
-    class Toggle extends React.Component {
-      constructor(props) {
-        super(props);
-
-        this.state = {
-          isToggleon: true
-        };
-
+      if (props.isLogged) {
+        return UserGreeting();
       }
 
-      handleClick = () => {
-        this.setState(prevState => ({
-          isToggleOn: !prevState.isToggleOn
-        }))
-      };
+      return GuestGreeting();
 
-      render() {
-        return (
-          <button onClick={this.handleClick}>{this.state.isToggleOn ? 'Включено' : 'Выключено'}</button>
-        )
-      }
     }
 
+    function UserGreeting() {
+      return (<h2>Привет пользователь!</h2>)
+    }
 
-    root.render(<Toggle />)
+    function GuestGreeting() {
+      return (<h2>Привет гость!</h2>)
+    }
+
+    root.render(<Greeting isLogged={true} />)
 
 
   </script>
