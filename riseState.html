@@ -16,7 +16,6 @@
 
   <script type="text/babel">
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
 
     const scaleNames = {
       c: 'Цельсия',
@@ -31,6 +30,7 @@
       return (celsius * 9 / 5) + 32;
     }
 
+
     function tryConvert(temperature, convert) {
       const input = parseFloat(temperature);
 
@@ -43,9 +43,45 @@
       return rounded.toString();
     }
 
+
+    function BoilingVerdict(props) {
+      if (props.celsius >= 100) {
+        return 'Вода закипит.'
+      }
+
+      return 'Вода не закипит.'
+
+    }
+
+    class TemperatureInput extends React.Component {
+      constructor(props) {
+        super(props);
+
+      }
+
+      hadleChangeValue = (event) => {
+        this.props.onTemperatureChange(event.target.value);
+      };
+
+      render() {
+        const temperature = this.props.temperature;
+        const scale = this.props.scale;
+
+        return (
+          <fieldset>
+            <legend>Введите температуру в градусах {scaleNames[scale]}:</legend>
+            <input onChange={this.hadleChangeValue} value={temperature} />
+          </fieldset>
+        );
+      }
+
+    }
+
+
     class Calculator extends React.Component {
       constructor(props) {
         super(props);
+
         this.state = { temperature: '', scale: 'c' };
       }
 
@@ -68,14 +104,14 @@
       render() {
         const temperature = this.state.temperature;
         const scale = this.state.scale;
-        const celsius = scale === 'c' ? tryConvert(temperature, toCelsius) : temperature;
-        const fahrenheit = scale === 'f' ? tryConvert(temperature, toFahrenheit) : temperature;
+        const celsius = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+        const fahrenheit = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
 
         return (
 
           <div>
-            <TemperatureInput onTemperatureChange={this.handlecelsiusChange} temperature={celsius} scale='c' />
-            <TemperatureInput onTemperatureChange={this.handleFahrenheitChange} temperature={fahrenheit} scale='f' />
+            <TemperatureInput onTemperatureChange={this.handleFahrenheitChange} temperature={celsius} scale='c' />
+            <TemperatureInput onTemperatureChange={this.handlecelsiusChange} temperature={fahrenheit} scale='f' />
             <BoilingVerdict celsius={parseFloat(celsius)} />
           </div>
         );
@@ -83,39 +119,8 @@
 
     }
 
-    class TemperatureInput extends React.Component {
-      constructor(props) {
-        super(props)
-      }
 
-      hadleChangeValue = (event) => {
-        this.props.onTemperatureChange(event.target.value);
-      };
-
-      render() {
-        const temperature = this.props.temperature;
-        const scale = this.props.scale;
-
-        return (
-          <fieldset>
-            <legend>Введите температуру в градусах {scaleNames[scale]}:</legend>
-            <input type="text" onChange={this.hadleChangeValue} value={temperature} />
-          </fieldset>
-        );
-      }
-
-    }
-
-    function BoilingVerdict(props) {
-      if (props.celsius >= 100) {
-        return 'Вода закипит.'
-      }
-
-      return 'Вода не закипит.'
-
-    }
-
-
+    const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<Calculator />);
 
   </script>
