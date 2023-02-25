@@ -28,13 +28,25 @@
     class FilterableProductTable extends React.Component {
       constructor(props) {
         super(props);
+        this.state = { filterText: '', inStockOnly: false }
+
+      }
+
+      filterChange = (filterText) => {
+        this.setState({ filterText: filterText });
+      }
+
+      inStockOnlyChange = (stock) => {
+        this.setState({ inStockOnly: stock });
       }
 
       render() {
+        const filterText = this.state.filterText;
+        const inStockOnly = this.state.inStockOnly;
         return (
           <div>
-            <SearchBar />
-            <ProductTable products={this.props.products} />
+            <SearchBar filterChange={this.filterChange} inStockOnlyChange={this.inStockOnlyChange} filterText={filterText} inStockOnly={inStockOnly} />
+            <ProductTable products={this.props.products} filterText={filterText} inStockOnly={inStockOnly} />
           </div>
         );
       }
@@ -46,12 +58,21 @@
         super(props);
       }
 
+      handleChangeCheck = (event) => {
+        this.props.inStockOnlyChange(event.target.checked);
+      };
+
+      handleChangeFilterText = (event) => {
+        this.props.filterChange(event.target.value);
+      };
+
+
       render() {
         return (
           <form>
-            <input type="text" placeholder="Search..." />
+            <input type="text" placeholder="Search..." onChange={this.handleChangeFilterText} value={this.props.filterText} />
             <p>
-              <input type="checkbox" />
+              <input type="checkbox" onChange={this.handleChangeCheck} checked={this.props.inStockOnly} />
               {' '}
               Only show products in stock
             </p>
@@ -70,11 +91,20 @@
         let lastCategory = null;
 
         this.props.products.forEach(product => {
+          if (product.name.indexOf(this.props.filterText) === -1) {
+            return
+          }
+
+          if (this.props.inStockOnly && !product.stocked) {
+            return;
+          }
+
           if (product.category !== lastCategory) {
             rows.push(
               <ProductCategoryRow category={product.category} key={product.category} />
             )
           }
+
           rows.push(
             <ProductRow product={product} key={product.name} />
           )
