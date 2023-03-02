@@ -20,7 +20,7 @@
       constructor(props) {
         super(props);
 
-        this.state = { isVisible: true };
+        this.state = { isVisible: false };
       }
 
       handleToggle = () => this.setState(prevstate => prevstate.isVisible = !prevstate.isVisible);
@@ -41,10 +41,19 @@
         super(props);
 
         this.state = { counter: 0 };
+        this.interval = null;
       }
 
       handlePlus = () => this.setState(prevstate => prevstate.counter++);
       handleMinus = () => this.setState(prevstate => prevstate.counter--);
+
+      componentDidMount() {
+        this.interval = setInterval(()=>console.log('fired'), 1000);
+      }
+
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
 
       render() {
         return (
