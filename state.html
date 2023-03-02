@@ -20,6 +20,26 @@
       constructor(props) {
         super(props);
 
+        this.state = { isVisible: true };
+      }
+
+      handleToggle = () => this.setState(prevstate => prevstate.isVisible = !prevstate.isVisible);
+
+
+      render() {
+        return (
+          <div>
+            {this.state.isVisible && <Counter />}
+            <button onClick={this.handleToggle}>Toggle</button>
+          </div>
+        );
+      }
+    }
+
+    class Counter extends React.Component {
+      constructor(props) {
+        super(props);
+
         this.state = { counter: 0 };
       }
 
