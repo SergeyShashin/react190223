@@ -43,7 +43,7 @@
         if (author !== 'Bot') {
           setTimeout(() => {
             this.setState({
-              messages: this.state.messages.concat([{ text: `Привет ${author}, ответ от бота!`, author: 'Bot' }])
+              messages: this.state.messages.concat([{ text: `${author}, сообщение получено!`, author: 'Bot' }])
             });
           }, 1000);
         }
