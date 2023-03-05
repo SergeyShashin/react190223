@@ -53,19 +53,73 @@
         clearInterval(this.interval);
       }
 
+      //Записывает в состояние Mesenger данные из компонента MessagesForm
+      onSend = (dataFromMessagesForm) => {
+        let { author, text } = dataFromMessagesForm;
+        this.setState({
+          messages: this.state.messages.concat([{ text: text, author: author }])
+        });
+      }
+
       render() {
         let { messages } = this.state;
-        console.log(messages);
         return (
           <div>
             <ul>
               {messages.map((message, idx) => <li key={idx}>{message.author}: {message.text}</li>)}
             </ul>
+            <MessagesForm onSend={this.onSend} />
           </div>
         )
 
       }
     }
+
+    class MessagesForm extends React.Component {
+      constructor(props) {
+        super(props);
+
+        this.state = {
+          author: '',
+          text: '',
+        }
+      }
+
+      //Сохраняет содержимое автора в author и текст в text
+      handleInputOnchange = (event) => {
+        let fildName = event.target.name;
+        this.setState({
+          [fildName]: event.target.value
+        }
+        )
+      }
+
+
+      //Отправляет в компонент Messenger автора и текст из формы
+      handleClickButtonSend = () => {
+        this.props.onSend(this.state);
+
+        this.setState({
+          text: ''
+        });
+
+      }
+
+      render() {
+        let { author, text } = this.state;
+
+        return (
+          <div>
+            <input onChange={this.handleInputOnchange} name='author' placeholder='автор' value={author} />
+            <textarea onChange={this.handleInputOnchange} name="text" placeholder='текст' value={text} cols="100" rows="1"></textarea>
+            <button onClick={this.handleClickButtonSend}>Send</button>
+          </div>
+        )
+      }
+
+    }
+
+
 
     class MessagesList extends React.Component {
       constructor(props) {
