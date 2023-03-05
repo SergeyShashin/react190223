@@ -23,20 +23,20 @@
         super(props);
         this.state = {
           messages: [
-            { text: 'Привет!', author: 'Семён' }
+            // { text: 'Привет!', author: 'Семён' }
           ]
         };
-        this.interval = null;
+        // this.interval = null;
       }
 
-      componentDidMount() {
-        this.interval = setInterval(() => {
-          let randIdx = Math.floor(Math.random() * messages.length);
-          this.setState({
-            messages: this.state.messages.concat([{ text: messages[randIdx], author: 'Семён' }])
-          });
-        }, 5000);
-      }
+      // componentDidMount() {
+      //   this.interval = setInterval(() => {
+      //     let randIdx = Math.floor(Math.random() * messages.length);
+      //     this.setState({
+      //       messages: this.state.messages.concat([{ text: messages[randIdx], author: 'Семён' }])
+      //     });
+      //   }, 5000);
+      // }
 
       componentDidUpdate() {
         let author = this.state.messages[this.state.messages.length - 1].author;
@@ -65,9 +65,7 @@
         let { messages } = this.state;
         return (
           <div>
-            <ul>
-              {messages.map((message, idx) => <li key={idx}>{message.author}: {message.text}</li>)}
-            </ul>
+            <MessagesList messages={messages} />
             <MessagesForm onSend={this.onSend} />
           </div>
         )
@@ -118,7 +116,7 @@
       }
 
     }
-    
+
 
     class MessagesList extends React.Component {
       constructor(props) {
@@ -126,6 +124,15 @@
       }
 
       render() {
+        let { messages } = this.props;
+        console.log(messages);
+        return (
+          <div>
+            <ul>
+              {messages.map((message, idx) => <Message message={message} key={idx} />)}
+            </ul>
+          </div>
+        )
 
       }
     }
@@ -136,6 +143,12 @@
       }
 
       render() {
+        let { author, text } = this.props.message;
+        return (
+          <div>
+            <li> {author}: {text}</li>
+          </div>
+        )
 
       }
     }
