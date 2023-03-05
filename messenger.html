@@ -21,13 +21,46 @@
     class Messenger extends React.Component {
       constructor(props) {
         super(props);
-        this.state = { messages: 'Привет!' }
+        this.state = {
+          messages: [
+            { text: 'Привет!', author: 'Семён' }
+          ]
+        };
+        this.interval = null;
+      }
+
+      componentDidMount() {
+        this.interval = setInterval(() => {
+          let randIdx = Math.floor(Math.random() * messages.length);
+          this.setState({
+            messages: this.state.messages.concat([{ text: messages[randIdx], author: 'Семён' }])
+          });
+        }, 5000);
+      }
+
+      componentDidUpdate() {
+        let author = this.state.messages[this.state.messages.length - 1].author;
+        if (author !== 'Bot') {
+          setTimeout(() => {
+            this.setState({
+              messages: this.state.messages.concat([{ text: `Привет ${author}, ответ от бота!`, author: 'Bot' }])
+            });
+          }, 1000);
+        }
+      }
+
+      componentWillUnmount() {
+        clearInterval(this.interval);
       }
 
       render() {
+        let { messages } = this.state;
+        console.log(messages);
         return (
           <div>
-            <MessagesList messages={this.props.messages} />
+            <ul>
+              {messages.map((message, idx) => <li key={idx}>{message.author}: {message.text}</li>)}
+            </ul>
           </div>
         )
 
@@ -40,11 +73,6 @@
       }
 
       render() {
-        return (
-          <ul>
-            {this.props.messages.map(message => <Message message={message} />)}
-          </ul>
-        )
 
       }
     }
@@ -55,18 +83,13 @@
       }
 
       render() {
-        return (
-          <li>
-            {this.props.message}
-          </li>
-        )
 
       }
     }
 
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<Messenger messages={messages} />);
+    root.render(<Messenger />);
 
   </script>
   <!--
