@@ -1,0 +1,12 @@
+input, textarea {
+  border: none;
+  border-bottom: 1px solid mediumaquamarine;
+}
+
+button{
+  margin-top: 10px;
+}
+
+textarea{
+  padding-top: 20px;
+}
